@@ -1,23 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { UseSelector, useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchSpecies } from "./features/species/speciesSlice";
 
 function App() {
+  const dispatch = useDispatch();
+  const { specieslist, status, error } = useSelector((state) => state.species);
+
+  console.log(status, "status");
+  useEffect(() => {
+    if (status === "idle") dispatch(fetchSpecies());
+  }, [dispatch, status]);
+
+  if (status === "loading") return <p>Loading...</p>;
+  if (status === "error") return <p>Error : {error.message}</p>;
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ul>
+        {specieslist.map((species) => (
+          <li key={species.name}>
+            <h1>
+              {species.name} - {species.classification}
+            </h1>
+            <p>{species.eyeColors.join(',')}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
