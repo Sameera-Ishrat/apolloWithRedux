@@ -14,7 +14,7 @@ function App() {
   if (status === "loading") return <p>Loading...</p>;
   if (status === "error") return <p>Error : {error.message}</p>;
   return (
-    <div className="App">
+    <div className="container">
       <ul>
         {specieslist.map((species) => (
           <li key={species.name}>
